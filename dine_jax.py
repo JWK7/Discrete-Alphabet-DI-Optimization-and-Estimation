@@ -7,6 +7,8 @@ from typing import Dict
 import jax
 import jax.numpy as jnp
 
+EPS = 1e-12
+
 
 def dv_lower_bound(t_joint: jnp.ndarray, t_reference: jnp.ndarray) -> jnp.ndarray:
     """Donsker-Varadhan lower bound used by DINE/MINE.
@@ -65,7 +67,7 @@ def empirical_directed_information(
     y: jnp.ndarray,
     alphabet_x: int,
     alphabet_y: int,
-    eps: float = 1e-12,
+    eps: float = EPS,
 ) -> jnp.ndarray:
     """Empirical DI for one-step memoryless channels (equals empirical I(X;Y))."""
     x_oh = jax.nn.one_hot(x, alphabet_x)
@@ -92,20 +94,20 @@ def optimize_discrete_policy(
         learning_rate: Gradient-ascent step size.
     """
 
-    def mutual_information_from_logits(logits: jnp.ndarray) -> jnp.ndarray:
+    def mutual_information_from_policy_logits(logits: jnp.ndarray) -> jnp.ndarray:
         px = jax.nn.softmax(logits)
         py = px @ channel
-        log_term = jnp.log(channel + 1e-12) - jnp.log(py + 1e-12)
+        log_term = jnp.log(channel + EPS) - jnp.log(py + EPS)
         return jnp.sum(px[:, None] * channel * log_term)
 
-    grad_fn = jax.grad(mutual_information_from_logits)
+    grad_fn = jax.grad(mutual_information_from_policy_logits)
     logits = jnp.zeros(channel.shape[0])
 
     for _ in range(num_steps):
         logits = logits + learning_rate * grad_fn(logits)
 
     optimal_px = jax.nn.softmax(logits)
-    estimated_di = mutual_information_from_logits(logits)
+    estimated_di = mutual_information_from_policy_logits(logits)
 
     return {
         "policy": optimal_px,
