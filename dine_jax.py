@@ -9,7 +9,15 @@ import jax.numpy as jnp
 
 
 def dv_lower_bound(t_joint: jnp.ndarray, t_reference: jnp.ndarray) -> jnp.ndarray:
-    """Donsker-Varadhan lower bound used by DINE/MINE."""
+    """Donsker-Varadhan lower bound used by DINE/MINE.
+
+    Args:
+        t_joint: Score samples from the joint distribution.
+        t_reference: Score samples from the product/reference distribution.
+
+    Returns:
+        Scalar DV lower bound estimate.
+    """
     return jnp.mean(t_joint) - jnp.log(jnp.mean(jnp.exp(t_reference)))
 
 
@@ -19,7 +27,17 @@ def estimate_di_from_scores(
     t_xy: jnp.ndarray,
     t_xy_ref: jnp.ndarray,
 ) -> jnp.ndarray:
-    """Directed information estimate from two DV terms."""
+    """Directed information estimate from two DV terms.
+
+    Args:
+        t_y: Score samples for Y history/current term.
+        t_y_ref: Reference (contrastive) score samples for Y term.
+        t_xy: Score samples for (X,Y) term.
+        t_xy_ref: Reference (contrastive) score samples for (X,Y) term.
+
+    Returns:
+        Estimated directed information in nats.
+    """
     return dv_lower_bound(t_xy, t_xy_ref) - dv_lower_bound(t_y, t_y_ref)
 
 

@@ -23,13 +23,13 @@ class DineJaxTests(unittest.TestCase):
         self.estimate_di_from_scores = estimate_di_from_scores
         self.optimize_discrete_policy = optimize_discrete_policy
 
-    def test_estimate_di_from_scores_zero_when_scores_match(self):
+    def test_estimate_di_from_scores_returns_zero_when_joint_equals_marginal(self):
         jnp = self.jnp
         t = jnp.array([0.1, -0.2, 0.3])
         di = self.estimate_di_from_scores(t, t, t, t)
         self.assertAlmostEqual(float(di), 0.0, places=6)
 
-    def test_empirical_directed_information_independent_is_near_zero(self):
+    def test_empirical_directed_information_near_zero_for_independent_variables(self):
         jnp = self.jnp
         x = jnp.array([0, 0, 1, 1, 0, 1, 0, 1])
         y = jnp.array([0, 1, 0, 1, 1, 0, 0, 1])
