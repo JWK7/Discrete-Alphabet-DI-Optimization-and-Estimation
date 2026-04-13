@@ -23,7 +23,7 @@ class DineJaxTests(unittest.TestCase):
         self.estimate_di_from_scores = estimate_di_from_scores
         self.optimize_discrete_policy = optimize_discrete_policy
 
-    def test_estimate_di_from_scores_returns_zero_when_joint_equals_marginal(self):
+    def test_estimate_di_from_scores_returns_zero_when_all_scores_identical(self):
         jnp = self.jnp
         t = jnp.array([0.1, -0.2, 0.3])
         di = self.estimate_di_from_scores(t, t, t, t)

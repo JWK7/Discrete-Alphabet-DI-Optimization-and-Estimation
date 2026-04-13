@@ -88,6 +88,8 @@ def optimize_discrete_policy(
 
     Args:
         channel: Transition matrix P(y|x), shape [|X|, |Y|]. Rows sum to 1.
+        num_steps: Number of gradient-ascent optimization steps.
+        learning_rate: Gradient-ascent step size.
     """
 
     def mutual_information_from_logits(logits: jnp.ndarray) -> jnp.ndarray:
