@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+src/DINE/__init__.py
+src/DINE/estimator.py
+src/DINE/network.py
+src/DINE/utils.py
+src/discrete_alphabet_di_optimization_and_estimation.egg-info/PKG-INFO
+src/discrete_alphabet_di_optimization_and_estimation.egg-info/SOURCES.txt
+src/discrete_alphabet_di_optimization_and_estimation.egg-info/dependency_links.txt
+src/discrete_alphabet_di_optimization_and_estimation.egg-info/requires.txt
+src/discrete_alphabet_di_optimization_and_estimation.egg-info/top_level.txt
+tests/test_data.py
